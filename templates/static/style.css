@@ -1,6 +1,8 @@
 body {
 
-    background-color: #f4f4f4;
+    background-color: #1e1e2f;
+
+    color: white;
 
     font-family: Arial;
 
@@ -12,17 +14,37 @@ body {
 
 h1 {
 
-    color: darkblue;
+    color: #00bfff;
+
+    font-size: 50px;
 }
 
 
 p {
 
-    font-size: 20px;
+    font-size: 22px;
 }
 
 
 ul {
 
     list-style-type: none;
+
+    padding: 0;
+}
+
+
+li {
+
+    background-color: #2d2d44;
+
+    margin: 10px auto;
+
+    padding: 15px;
+
+    width: 300px;
+
+    border-radius: 10px;
+
+    font-size: 20px;
 }
