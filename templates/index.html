@@ -3,6 +3,9 @@
 
 <head>
 
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Sherif Portfolio</title>
 
     <link rel="stylesheet"
@@ -14,11 +17,22 @@
 
     <nav>
 
-        <a href="/">Home</a>
+        <div>
 
-        <a href="/projects">Projects</a>
+            <a href="/">Home</a>
 
-        <a href="/contact">Contact</a>
+            <a href="/projects">Projects</a>
+
+            <a href="/contact">Contact</a>
+
+        </div>
+
+
+        <button onclick="toggleTheme()">
+
+            Toggle Theme
+
+        </button>
 
     </nav>
 
@@ -27,6 +41,7 @@
     <img src="{{ url_for('static', filename='profile.jpg') }}"
          alt="Profile Picture">
 
+    
     <h1>Sherif</h1>
 
     <h2>Python & Flask Developer</h2>
@@ -52,6 +67,15 @@
         <li>Weather App</li>
         <li>GUI Calculator</li>
     </ul>
+
+    <script>
+
+function toggleTheme() {
+
+    document.body.classList.toggle("light-mode");
+}
+
+</script>
 
 </body>
 
