@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Messages</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <nav>
+
+        <div>
+
+            <a href="/">Home</a>
+
+            <a href="/projects">Projects</a>
+
+            <a href="/contact">Contact</a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>Contact Messages</h1>
+
+        {% for message in messages %}
+
+        <div class="project-card">
+
+            <h2>{{ message.name }}</h2>
+
+            <p><strong>Email:</strong>
+               {{ message.email }}</p>
+
+            <p>{{ message.message }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>

@@ -1,29 +1,33 @@
-from flask import Flask, render_template
-
-app = Flask(__name__)
-
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/projects")
-def projects():
-    return render_template("projects.html")
-
-
 from flask import Flask, render_template, request
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///messages.db"
+
+db = SQLAlchemy(app)
+
+
+class ContactMessage(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String(100))
+
+    email = db.Column(db.String(100))
+
+    message = db.Column(db.Text)
+
+
 @app.route("/")
 def home():
+
     return render_template("index.html")
 
 
 @app.route("/projects")
 def projects():
+
     return render_template("projects.html")
 
 
@@ -35,20 +39,51 @@ def contact():
     if request.method == "POST":
 
         name = request.form["name"]
+
         email = request.form["email"]
+
         message = request.form["message"]
 
-        print("New Message")
-        print("Name:", name)
-        print("Email:", email)
-        print("Message:", message)
+        new_message = ContactMessage(
+
+            name=name,
+
+            email=email,
+
+            message=message
+        )
+
+        db.session.add(new_message)
+
+        db.session.commit()
 
         success = True
-        return render_template(
+
+    return render_template(
+
         "contact.html",
+
         success=success
     )
 
+@app.route("/messages")
+def messages():
+
+    all_messages = ContactMessage.query.all()
+
+    return render_template(
+
+        "messages.html",
+
+        messages=all_messages
+    )
+
+
+with app.app_context():
+
+    db.create_all()
+
 
 if __name__ == "__main__":
+
     app.run(debug=True)
