@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -68,12 +68,14 @@ def contact():
         success=success
     )
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
 
         username = request.form["username"]
+
         password = request.form["password"]
 
         if username == "admin" and password == "1234":
@@ -82,6 +84,10 @@ def login():
 
             return redirect("/messages")
 
+        else:
+
+            flash("Invalid username or password")
+
     return render_template("login.html")
 
 @app.route("/messages")
@@ -89,7 +95,7 @@ def messages():
 
     if "user" not in session:
 
-         return redirect("/login")
+        return redirect("/login")
 
     all_messages = ContactMessage.query.all()
 
