@@ -170,6 +170,8 @@ button {
     margin-top: 10px;
 
     transition: 0.3s;
+
+    margin-right: 10px;
 }
 
 
@@ -326,4 +328,18 @@ nav button {
 nav button:hover {
 
     background-color: #009acd;
+}
+
+.project-card img {
+
+    width: 100%;
+
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+}
+
+.project-card a {
+
+    text-decoration: none;
 }

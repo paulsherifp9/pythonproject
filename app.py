@@ -44,8 +44,7 @@ def contact():
         print("Message:", message)
 
         success = True
-
-    return render_template(
+        return render_template(
         "contact.html",
         success=success
     )
