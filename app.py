@@ -150,13 +150,20 @@ def login():
 
             session["user"] = username
 
-            return redirect("/messages")
+            if user.role == "admin":
+
+                return redirect("/messages")
+
+            else:
+
+                return redirect("/")
 
         else:
 
             flash("Invalid username or password")
 
     return render_template("login.html")
+
 
 @app.route("/messages")
 def messages():
@@ -167,30 +174,76 @@ def messages():
 
         return redirect("/login")
 
-
     user = User.query.filter_by(
-             username=session["user"]
-        ).first()
+        username=session["user"]
+    ).first()
 
+    if not user or user.role != "admin":
 
-    if user.role != "admin":
+        flash("Access denied")
 
-            flash("Access denied")
-
-            return redirect("/")
+        return redirect("/")
 
     all_messages = ContactMessage.query.all()
 
     return render_template(
-
         "messages.html",
-
         messages=all_messages
+    )
+
+@app.route("/dashboard")
+def dashboard():
+
+    if not session.get("user"):
+
+        return redirect("/login")
+
+    user = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not user or user.role != "admin":
+
+        flash("Access denied")
+
+        return redirect("/")
+
+    total_users = User.query.count()
+
+    total_messages = ContactMessage.query.count()
+
+    total_admins = User.query.filter_by(
+        role="admin"
+    ).count()
+
+    return render_template(
+
+        "dashboard.html",
+
+        total_users=total_users,
+
+        total_messages=total_messages,
+
+        total_admins=total_admins
     )
 
 @app.route("/edit_message/<int:id>",
            methods=["GET", "POST"])
 def edit_message(id):
+
+    if not session.get("user"):
+
+        return redirect("/login")
+
+    user = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not user or user.role != "admin":
+
+        flash("Access denied")
+
+        return redirect("/")
 
     message = ContactMessage.query.get(id)
 
@@ -216,31 +269,27 @@ def edit_message(id):
 @app.route("/delete_message/<int:id>")
 def delete_message(id):
 
-    user = User.query.filter_by(
-    username=session["user"]
-).first()
+    if not session.get("user"):
 
-    if user.role != "admin":
+        return redirect("/login")
+
+    user = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not user or user.role != "admin":
 
         flash("Access denied")
 
         return redirect("/")
 
-    if not session.get("user"):
-
-        flash("Please login first")
-
-        return redirect("/login")
-
     message = ContactMessage.query.get(id)
 
-    if message:
+    db.session.delete(message)
 
-        db.session.delete(message)
+    db.session.commit()
 
-        db.session.commit()
-
-        flash("Message deleted")
+    flash("Message deleted successfully")
 
     return redirect("/messages")
 
