@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Message</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Edit Message</h1>
+
+        <form method="POST">
+
+            <input type="text"
+                   name="name"
+                   value="{{ message.name }}"
+                   required>
+
+            <input type="email"
+                   name="email"
+                   value="{{ message.email }}"
+                   required>
+
+            <textarea name="message"
+                      required>{{ message.message }}</textarea>
+
+            <button type="submit">
+
+                Update Message
+
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

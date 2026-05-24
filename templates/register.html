@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Login</title>
+    <title>Register</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static',
@@ -15,25 +15,25 @@
 
     <div class="container">
 
-        <h1>Admin Login</h1>
+        <h1>Create Account</h1>
 
         {% with messages = get_flashed_messages() %}
 
-    {% if messages %}
+            {% if messages %}
 
-        {% for message in messages %}
+                {% for message in messages %}
 
-            <p style="color:red;">
+                    <p style="color:red;">
 
-                {{ message }}
+                        {{ message }}
 
-            </p>
+                    </p>
 
-        {% endfor %}
+                {% endfor %}
 
-    {% endif %}
+            {% endif %}
 
-{% endwith %}
+        {% endwith %}
 
         <form method="POST">
 
@@ -49,19 +49,23 @@
 
             <button type="submit">
 
-                Login
+                Register
 
             </button>
 
         </form>
 
-            <p>
+        <p>
 
-                No account?
+            Already have account?
 
-            <a href="/register">Register</a>
+            <a href="/login">
 
-            </p>
+                Login
+
+            </a>
+
+        </p>
 
     </div>
 

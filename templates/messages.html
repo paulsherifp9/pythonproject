@@ -47,6 +47,20 @@
 
             <p>{{ message.message }}</p>
 
+            <a href="/edit_message/{{ message.id }}"
+                class="delete-btn">
+
+                Edit
+
+            </a>
+
+            <a href="/delete_message/{{ message.id }}"
+                class="delete-btn">
+
+                Delete
+
+            </a>
+
         </div>
 
         {% endfor %}

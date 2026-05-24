@@ -343,3 +343,20 @@ nav button:hover {
 
     text-decoration: none;
 }
+
+.delete-btn {
+
+    color: white;
+
+    background: red;
+
+    padding: 8px 15px;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    display: inline-block;
+
+    margin-top: 10px;
+}
