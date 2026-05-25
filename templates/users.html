@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Users</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <nav>
+
+        <div>
+
+            <a href="/">Home</a>
+
+            <a href="/dashboard">Dashboard</a>
+
+            <a href="/messages">Messages</a>
+
+            <a href="/logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <h1>All Users</h1>
+
+        {% for user in users %}
+
+        <div class="project-card">
+
+            <h2>{{ user.username }}</h2>
+
+            <a href="/edit_user/{{ user.id }}">Edit</a>
+
+            <a href="/delete_user/{{ user.id }}"class="delete-btn">Delete</a>
+
+            <p>
+
+                Role: {{ user.role }}
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>

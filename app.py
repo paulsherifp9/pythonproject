@@ -244,6 +244,94 @@ def dashboard():
         total_admins=total_admins
     )
 
+@app.route("/edit_user/<int:id>",
+           methods=["GET", "POST"])
+def edit_user(id):
+
+    if not session.get("user"):
+
+        return redirect("/login")
+
+    admin = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not admin or admin.role != "admin":
+
+        flash("Access denied")
+
+        return redirect("/")
+
+    user = User.query.get(id)
+
+    if request.method == "POST":
+
+        user.username = request.form["username"]
+
+        user.role = request.form["role"]
+
+        db.session.commit()
+
+        flash("User updated successfully")
+
+        return redirect("/users")
+
+    return render_template(
+        "edit_user.html",
+        user=user
+    )
+
+@app.route("/delete_user/<int:id>")
+def delete_user(id):
+
+    if not session.get("user"):
+
+        return redirect("/login")
+
+    admin = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not admin or admin.role != "admin":
+
+        flash("Access denied")
+
+        return redirect("/")
+
+    user = User.query.get(id)
+
+    db.session.delete(user)
+
+    db.session.commit()
+
+    flash("User deleted successfully")
+
+    return redirect("/users")
+
+@app.route("/users")
+def users():
+
+    if not session.get("user"):
+
+        return redirect("/login")
+
+    user = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if not user or user.role != "admin":
+
+        flash("Access denied")
+
+        return redirect("/")
+
+    all_users = User.query.all()
+
+    return render_template(
+        "users.html",
+        users=all_users
+    )
+
 @app.route("/edit_message/<int:id>",
            methods=["GET", "POST"])
 def edit_message(id):
