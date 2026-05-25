@@ -36,6 +36,20 @@
 
         <h1>Contact Messages</h1>
 
+        <form method="GET">
+
+            <input type="text"
+                    name="search"
+                    placeholder="Search messages">
+
+        <button type="submit">
+
+            Search
+
+        </button>
+
+        </form>
+
         {% for message in messages %}
 
         <div class="project-card">

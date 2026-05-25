@@ -184,12 +184,29 @@ def messages():
 
         return redirect("/")
 
-    all_messages = ContactMessage.query.all()
+    search = request.args.get("search")
+
+    if search:
+
+        all_messages = ContactMessage.query.filter(
+
+            ContactMessage.name.contains(search) |
+
+            ContactMessage.email.contains(search) |
+
+            ContactMessage.message.contains(search)
+
+        ).all()
+
+    else:
+
+        all_messages = ContactMessage.query.all()
 
     return render_template(
         "messages.html",
         messages=all_messages
     )
+
 
 @app.route("/dashboard")
 def dashboard():
