@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='style.css') }}">
+</head>
+
+<body>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/messages">Messages</a>
+    <a href="/users">Users</a>
+    <a href="/logout">Logout</a>
+</nav>
+
+<div class="container">
+
+    <h1>My Profile</h1>
+
+    <div class="project-card">
+
+        <h2>{{ user.username }}</h2>
+
+        <p><strong>Role:</strong> {{ user.role }}</p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

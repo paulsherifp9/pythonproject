@@ -2,7 +2,22 @@ from flask import Flask, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_jwt_extended import (
+
+    JWTManager,
+
+    create_access_token,
+
+    jwt_required,
+
+    get_jwt_identity
+)
+
 app = Flask(__name__)
+
+app.config["JWT_SECRET_KEY"] = "supersecretkey"
+
+jwt = JWTManager(app)
 
 app.secret_key = "secret123"
 
@@ -332,6 +347,64 @@ def users():
         users=all_users
     )
 
+@app.route("/profile/edit", methods=["GET", "POST"])
+def edit_profile():
+
+    if not session.get("user"):
+        return redirect("/login")
+
+    user = User.query.filter_by(
+        username=session["user"]
+    ).first()
+
+    if request.method == "POST":
+
+        user.username = request.form["username"]
+
+        db.session.commit()
+
+        session["user"] = user.username
+
+        return redirect("/profile")
+
+    return render_template(
+        "edit_profile.html",
+        user=user
+    )
+
+@app.route("/api/users")
+def api_users():
+
+    users = User.query.all()
+
+    return {
+        "users": [
+            {
+                "id": u.id,
+                "username": u.username,
+                "role": u.role
+            }
+            for u in users
+        ]
+    }
+
+@app.route("/api/messages")
+def api_messages():
+
+    messages = ContactMessage.query.all()
+
+    return {
+        "messages": [
+            {
+                "id": m.id,
+                "name": m.name,
+                "email": m.email,
+                "message": m.message
+            }
+            for m in messages
+        ]
+    }
+
 @app.route("/edit_message/<int:id>",
            methods=["GET", "POST"])
 def edit_message(id):
@@ -411,6 +484,45 @@ def logout():
 with app.app_context():
 
     db.create_all()
+    
+@app.route("/api/login", methods=["POST"])
+def api_login():
+
+    username = request.json.get("username")
+
+    password = request.json.get("password")
+
+    user = User.query.filter_by(
+        username=username
+    ).first()
+
+    if user and check_password_hash(
+        user.password,
+        password
+    ):
+
+        access_token = create_access_token(
+            identity=username
+        )
+
+        return {
+            "access_token": access_token
+        }
+
+    return {
+        "message": "Invalid credentials"
+    }, 401
+
+@app.route("/api/protected")
+@jwt_required()
+def protected():
+
+    current_user = get_jwt_identity()
+
+    return {
+        "message": "Protected route access granted",
+        "user": current_user
+    }
 
 
 if __name__ == "__main__":
